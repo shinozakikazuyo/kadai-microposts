@@ -1,10 +1,15 @@
-<!-- containerに囲まれている状態。その後、横幅いっぱいに広げている -->
-<div class="center jumbotron">
-    
-　<!-- 中央寄せ -->
-  <div class="text-center">
-    <h1>Welcome to the Microposts</h1>
-    <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
-  </div>
+<% if logged_in? %>
+  <p>ログイン完了ユーザ: <%= current_user.name %></p>
   
-</div>
+<% else %>
+  <!-- containerに囲まれている状態。その後、横幅いっぱいに広げている -->
+  <div class="center jumbotron">
+      
+  　<!-- 中央寄せ -->
+    <div class="text-center">
+      <h1>Welcome to the Microposts</h1>
+      <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
+    </div>
+    
+  </div>
+<% end %>

@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
   
+  #ApplicationControllerのrequire_user_logged_inをindex、showページで使用する
+  before_action :require_user_logged_in, only: [:index, :show]
+  
   def index
     @users = User.order(id: :desc).page(params[:page]).per(20)
   end
