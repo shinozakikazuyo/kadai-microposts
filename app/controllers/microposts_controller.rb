@@ -1,4 +1,5 @@
 class MicropostsController < ApplicationController
+  
   #ログインが必須
   before_action :require_user_logged_in
   #destroy アクションが実行される前にユーザーをチェック

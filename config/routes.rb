@@ -11,11 +11,9 @@ Rails.application.routes.draw do
     member do
       get :followings
       get :followers
+      get :likes
     end
-    #ユーザの検索結果を表示
-    collection do
-      get :search
-    end
+
   end
   
   #ログイン
@@ -24,9 +22,12 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   
   #新規投稿
-  resources :microposts, only: [:create, :destroy]
+  resources :microposts, only: [:create, :destroy] 
   
   #フォロー
   resources :relationships, only: [:create, :destroy]
+  
+  #お気に入り
+  resources :favorites, only: [:create, :destroy]
   
 end

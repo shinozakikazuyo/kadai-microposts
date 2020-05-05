@@ -1,0 +1,23 @@
+<% if current_user == @user %>
+
+  <!-- 先頭マークの無いリスト -->
+  <ul class="list-unstyled">
+    
+  <% @likes.each do |like| %>
+    <li class="media">
+      
+      <div class="media-body">
+        
+        <div>
+          <% post = Micropost.find_by(id: like.micropost_id) %>
+          <%= post.content %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+  
+  </ul>
+  
+  <%= paginate @likes %>
+
+<% end %>

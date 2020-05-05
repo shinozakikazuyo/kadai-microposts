@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  
   before_save { self.email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 },
@@ -6,14 +7,21 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
-  has_many :microposts
-  #自分がフォローしているUser」への参照 
-  has_many :relationships
+  #一対多（テーブル名）
+  has_many :microposts #ユーザーに対してのPOST
+  has_many :relationships #ユーザーに対してのフォロワー
+  has_many :favorites #ユーザーに対してのお気に入り
+  
+  
   #該当の user がフォローしている User 達を取得
   has_many :followings, through: :relationships, source: :follow
-  has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   #自分をフォローしている User 達 を取得
+  #参照するクラスを指定
+  has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverses_of_relationship, source: :user
+  
+  #お気に入り登録
+  has_many :likes, through: :favorites, source: :micropost
   
   
   def follow(other_user)
@@ -35,6 +43,22 @@ class User < ApplicationRecord
   
   def feed_microposts
     Micropost.where(user_id: self.following_ids + [self.id])
+  end
+  
+  
+  #お気に入り機能
+  def favorite(micropost)
+    #登録済みかをチェックする
+    favorites.find_or_create_by(micropost_id: micropost.id)
+  end
+
+  def unfavorite(micropost)
+    favorite = favorites.find_by(micropost_id: micropost.id)
+    favorite.destroy if favorite
+  end
+  
+  def favorite?(micropost)
+    self.likes.include?(micropost)
   end
   
 end
