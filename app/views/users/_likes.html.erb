@@ -11,9 +11,11 @@
         <div>
           <% post = Micropost.find_by(id: like.micropost_id) %>
           <%= post.content %>
+          <%= render 'favorites/favorite_button', micropost: post %>
         </div>
       </div>
     </li>
+    
   <% end %>
   
   </ul>
